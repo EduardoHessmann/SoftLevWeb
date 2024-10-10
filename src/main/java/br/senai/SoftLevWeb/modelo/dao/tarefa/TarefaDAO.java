@@ -9,7 +9,5 @@ public interface TarefaDAO {
 	void deletarTarefa(Tarefa Tarefa);
 
 	void atualizarTarefa(Tarefa Tarefa);
-	
-	Tarefa buscarTarefaPorId(Long id);
 
 }

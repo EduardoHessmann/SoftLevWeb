@@ -2,13 +2,34 @@ package br.senai.SoftLevWeb.modelo.entidade.usuario;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "usuario")
 public class Usuario implements Serializable{
 
 	private static final long serialVersionUID = 8812649284236887370L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_usuario")
 	private Long id;
+	
+	@Column(name = "nome_usuario", length = 25, nullable = false)
 	private String nome;
+	
+	@Column(name = "email_usuario", length = 65, nullable = false)
 	private String email;
+	
+	@Column(name = "senha_usuario", length = 25, nullable = false)
 	private String senha;
 	
 	public Usuario() {}

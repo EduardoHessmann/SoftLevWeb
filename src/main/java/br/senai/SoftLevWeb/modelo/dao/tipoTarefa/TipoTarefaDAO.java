@@ -9,7 +9,5 @@ public interface TipoTarefaDAO {
 	void deletarTipoTarefa(TipoTarefa tipoTarefa);
 
 	void atualizarTipoTarefa(TipoTarefa tipoTarefa);
-	
-	TipoTarefa buscarTipoTarefaPorId(Long id);
 
 }
