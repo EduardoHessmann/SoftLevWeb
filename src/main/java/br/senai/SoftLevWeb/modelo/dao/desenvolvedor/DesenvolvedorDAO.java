@@ -4,7 +4,7 @@ import br.senai.SoftLevWeb.modelo.entidade.desenvolvedor.Desenvolvedor;
 
 public interface DesenvolvedorDAO {
 	
-	void inserirDesenvovedor(Desenvolvedor desenvolvedor);
+	void inserirDesenvolvedor(Desenvolvedor desenvolvedor);
 
 	void deletarDesenvolvedor(Desenvolvedor desenvolvedor);
 
