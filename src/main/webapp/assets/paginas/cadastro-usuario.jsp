@@ -12,15 +12,13 @@
 	<title>Soft Lev Web - Login</title>
 	<style><%@include file="../../assets/css/estilo.css"%></style>
 </head>
-<body class="flex flex-col min-h-screen bg-orchidBlossom font-poppins">
+<body>
     
-    <%@include file="../../../assets/paginas/menu.jsp"%>
-    
-    <div>
+    <div class="divPrincipal">
         <div>
             <div>
-                <h1>Adicionar Máquina</h1>
-                <a href="home">Voltar</a>
+                <h1>Cadastro</h1>
+                <a href="login">Voltar</a>
             </div>
                 <div>
                     <form action="inserir-usuario">

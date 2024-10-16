@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.senai.SoftLevWeb.modelo.dao.desenvolvedor.DesenvolvedorDAO;
 import br.senai.SoftLevWeb.modelo.dao.desenvolvedor.DesenvolvedorDAOImpl;
@@ -55,23 +56,27 @@ public class Servlet extends HttpServlet {
 			case "/login":
 				mostrarLogin(request, response);
 				break;
-				
+
+			case "/logar":
+				logar(request, response);
+				break;
+
 			case "/tela-principal":
 				mostrarTelaPrincipal(request, response);
 				break;
-				
+
 			case "/cadastro-usuario":
 				mostrarCadastroUsuario(request, response);
 				break;
-				
+
 			case "/inserir-usuario":
 				inserirUsuario(request, response);
 				break;
-				
+
 			case "/inserir-desenvolvedor":
 				inserirDesenvolvedor(request, response);
 				break;
-				
+
 			case "/inserir-tarefa":
 				inserirTarefa(request, response);
 				break;
@@ -92,60 +97,78 @@ public class Servlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/login.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarTelaPrincipal(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/login.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/tela-principal.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarCadastroUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-usuario.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
+	private void logar(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		String email = request.getParameter("email");
+		String senha = request.getParameter("senha");
+		HttpSession sessao = request.getSession();
+		Usuario usuario = usuarioDAO.buscarUsuarioPorEmailESenha(email, senha);
+		sessao.setAttribute("usuario", usuario);
+		response.sendRedirect("tela-principal");
+
+		if (usuario != null) {
+			sessao.setAttribute("usuario", usuario);
+			response.sendRedirect("tela-principal");
+			request.setAttribute("usuario", usuario);
+		} else {
+			response.sendRedirect("login");
+		}
+
+	}
+
 	private void inserirUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
-		
+
 		usuarioDAO.inserirUsuario(new Usuario(nome, email, senha));
-		
 
 		response.sendRedirect("login");
 
 	}
-	
+
 	private void inserirTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
 //		TipoTarefa tipoTarefa = request.getParameter("tipoTarefa");
-		
+
 //		tarefaDAO.inserirTarefa(new Tarefa(nome, desc, tipoTarefa));
-		
+
 		response.sendRedirect("tela-principal");
 
 	}
-	
+
 	private void inserirDesenvolvedor(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
-		
+
 		desenvolvedorDAO.inserirDesenvolvedor(new Desenvolvedor(nome, email, senha));
-		
 
 		response.sendRedirect("login");
 
 	}
-	
+
 }

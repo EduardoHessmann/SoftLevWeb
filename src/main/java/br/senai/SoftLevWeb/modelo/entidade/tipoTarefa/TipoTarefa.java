@@ -23,7 +23,7 @@ public class TipoTarefa implements Serializable {
 	@Column(name = "id_tipo_tarefa")
 	private Long id;
 	
-	@Column(name = "id_tipo_tarefa", length = 100, nullable = false)
+	@Column(name = "nome", length = 100, nullable = false)
 	private String nome;
 
 	public TipoTarefa() {}

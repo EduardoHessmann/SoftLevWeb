@@ -14,7 +14,7 @@
 </head>
 
 <body>
-	<div>
+	<div class="divPrincipal">
 		<h2>Login</h2>
 		<form action="logar" method="post">
 			<div>

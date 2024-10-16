@@ -1,0 +1,177 @@
+/* Estilos gerais */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Estilo do contêiner principal */
+.divPrincipal {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin: 20px auto;
+}
+
+/* Estilo do menu lateral (aside) */
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #2c3e50;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo e título */
+aside div a {
+    display: block;
+    text-align: center;
+    color: #ecf0f1;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 30px;
+}
+
+/* Lista de navegação */
+aside ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin: 20px 0;
+}
+
+aside ul li a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+aside ul li a:hover {
+    background-color: #34495e;
+    border-radius: 4px;
+}
+
+/* Estilos do conteúdo principal */
+main {
+    margin-left: 270px; /* Espaçamento para evitar sobreposição do aside */
+    padding: 40px;
+    flex-grow: 1;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Cabeçalhos */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+/* Estilos de navegação */
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos do formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os campos */
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Ajustes para o cabeçalho da página de cadastro */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header a {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+header a:hover {
+    background-color: #0056b3;
+}
