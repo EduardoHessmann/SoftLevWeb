@@ -16,27 +16,18 @@
 	<div class="divPrincipal">
 		<div>
 			<div>
-				<h1>Cadastro Tarefa</h1>
+				<h1>Cadastro Tipo Tarefa</h1>
 				<a href="tela-principal">Voltar</a>
 			</div>
 			<div>
-				<form action="inserir-tarefa">
+				<form action="inserir-tipo-tarefa">
 					<div>
 						<label>Nome</label> <input type="text" name="nome">
 					</div>
 					<div>
 						<label>desc</label> <input type="text" name="desc">
 					</div>
-					<div>
-						<label for="tipo-tarefa">Tipo da Tarefa</label>
-						<div class="tipo-tarefa">
-							<select name="id">
-								<c:forEach var="tipoTarefa" items="${tiposTarefa}">
-									<option value="${tipoTarefa.id}">${tipoTarefa.nome}</option>
-								</c:forEach>
-							</select>
-						</div>
-					</div>
+		
 					<div>
 						<input type="submit" value="Adicionar">
 					</div>

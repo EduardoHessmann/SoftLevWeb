@@ -18,10 +18,13 @@
 					<a href="home"><span>Início</span></a>
 				</li>
 				<li>
-					<a href="cadastro-tarefa"><span>Cadastro Tarefa</span></a>
+					<a href="cadastro-tarefa"><span>Nova Tarefa</span></a>
 				</li>
 				<li>
-					<a href="cadastro-tipo-tarefa"><span>Cadastro Tipo Tarefa</span></a>
+					<a href="cadastro-tipo-tarefa"><span>Novo Tipo Tarefa</span></a>
+				</li>
+				<li>
+					<a href="cadastro-desenvolvedor"><span>Novo Desenvolvedor</span></a>
 				</li>
 				<li>
 					<a href="login"><span>Sair</span></a>

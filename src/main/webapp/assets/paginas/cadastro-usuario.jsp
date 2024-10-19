@@ -9,7 +9,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Soft Lev Web - Login</title>
+	<title>Soft Lev Web</title>
 	<style><%@include file="../../assets/css/estilo.css"%></style>
 </head>
 <body>

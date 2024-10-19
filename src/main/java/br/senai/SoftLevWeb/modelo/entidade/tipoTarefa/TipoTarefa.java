@@ -22,14 +22,19 @@ public class TipoTarefa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_tipo_tarefa")
 	private Long id;
-	
-	@Column(name = "nome", length = 100, nullable = false)
+
+	@Column(name = "nome_tipo_tarefa", length = 100, nullable = false)
 	private String nome;
 
-	public TipoTarefa() {}
+	@Column(name = "desc_tipo_tarefa", length = 100, nullable = false)
+	private String desc;
 
-	public TipoTarefa(String nome) {
+	public TipoTarefa() {
+	}
+
+	public TipoTarefa(String nome, String desc) {
 		this.nome = nome;
+		this.desc = desc;
 	}
 
 	public TipoTarefa(Long id, String nome) {
@@ -51,6 +56,14 @@ public class TipoTarefa implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
 }

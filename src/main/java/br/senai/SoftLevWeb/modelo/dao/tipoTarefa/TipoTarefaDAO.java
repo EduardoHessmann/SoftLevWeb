@@ -1,5 +1,7 @@
 package br.senai.SoftLevWeb.modelo.dao.tipoTarefa;
 
+import java.util.List;
+
 import br.senai.SoftLevWeb.modelo.entidade.tipoTarefa.TipoTarefa;
 
 public interface TipoTarefaDAO {
@@ -9,5 +11,9 @@ public interface TipoTarefaDAO {
 	void deletarTipoTarefa(TipoTarefa tipoTarefa);
 
 	void atualizarTipoTarefa(TipoTarefa tipoTarefa);
+	
+	TipoTarefa buscarTipoTarefaPorId(Long id);
+	
+	List<TipoTarefa> buscarTiposTarefa();
 
 }
