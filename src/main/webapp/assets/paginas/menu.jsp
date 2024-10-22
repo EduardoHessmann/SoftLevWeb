@@ -11,7 +11,7 @@
 	<aside>
 		<div>
 			<a href="home">
-				<span class="ml-0 font-extrabold">Soft Lev Web</span>
+				<span>Soft Lev Web</span>
 			</a>
 			<ul>
 				<li>

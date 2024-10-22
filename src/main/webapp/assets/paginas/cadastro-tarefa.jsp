@@ -13,11 +13,13 @@
 <style><%@include file="../../assets/css/estilo.css"%></style></head>
 <body>
 
+<%@include file="../../assets/paginas/menu.jsp"%>
+
 	<div class="divPrincipal">
 		<div>
 			<div>
 				<h1>Cadastro Tarefa</h1>
-				<a href="tela-principal">Voltar</a>
+				<a href="home">Voltar</a>
 			</div>
 			<div>
 				<form action="inserir-tarefa">
@@ -35,6 +37,8 @@
 									<option value="${tipoTarefa.id}">${tipoTarefa.nome}</option>
 								</c:forEach>
 							</select>
+							
+							<p>Não tem um tipo tarefa? <a href="cadastro-tipo-tarefa">Cadastre-a</a></p>
 						</div>
 					</div>
 					<div>

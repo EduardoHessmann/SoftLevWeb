@@ -64,8 +64,8 @@ public class Servlet extends HttpServlet {
 				logar(request, response);
 				break;
 
-			case "/tela-principal":
-				mostrarTelaPrincipal(request, response);
+			case "/home":
+				mostrarHome(request, response);
 				break;
 
 			case "/cadastro-usuario":
@@ -117,10 +117,13 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void mostrarTelaPrincipal(HttpServletRequest request, HttpServletResponse response)
+	private void mostrarHome(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
+		
+		List<Tarefa> tarefas = tarefaDAO.buscarTarefasComTipoTarefa();
+		request.setAttribute("tarefas", tarefas);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/tela-principal.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/home.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -165,7 +168,7 @@ public class Servlet extends HttpServlet {
 
 		if (usuario != null) {
 			sessao.setAttribute("usuario", usuario);
-			response.sendRedirect("tela-principal");
+			response.sendRedirect("home");
 		} else {
 			response.sendRedirect("login");
 		}
@@ -194,7 +197,7 @@ public class Servlet extends HttpServlet {
 
 		tarefaDAO.inserirTarefa(new Tarefa(nome, desc, tipoTarefa));
 
-		response.sendRedirect("tela-principal");
+		response.sendRedirect("home");
 
 	}
 	
@@ -206,7 +209,7 @@ public class Servlet extends HttpServlet {
 		
 		tipoTarefaDAO.inserirTipoTarefa(new TipoTarefa(nome, desc));
 		
-		response.sendRedirect("tela-principal");
+		response.sendRedirect("home");
 
 	}
 

@@ -13,11 +13,13 @@
 <style><%@include file="../../assets/css/estilo.css"%></style></head>
 <body>
 
+<%@include file="../../assets/paginas/menu.jsp"%>
+
 	<div class="divPrincipal">
 		<div>
 			<div>
 				<h1>Cadastro Tipo Tarefa</h1>
-				<a href="tela-principal">Voltar</a>
+				<a href="home">Voltar</a>
 			</div>
 			<div>
 				<form action="inserir-tipo-tarefa">

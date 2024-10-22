@@ -1,5 +1,7 @@
 package br.senai.SoftLevWeb.modelo.dao.tarefa;
 
+import java.util.List;
+
 import br.senai.SoftLevWeb.modelo.entidade.tarefa.Tarefa;
 
 public interface TarefaDAO {
@@ -9,5 +11,9 @@ public interface TarefaDAO {
 	void deletarTarefa(Tarefa Tarefa);
 
 	void atualizarTarefa(Tarefa Tarefa);
+	
+	Tarefa buscarTarefaPorId(Long id);
+	
+	List<Tarefa> buscarTarefasComTipoTarefa();
 
 }
