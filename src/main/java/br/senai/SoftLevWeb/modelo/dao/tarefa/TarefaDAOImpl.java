@@ -116,6 +116,8 @@ public class TarefaDAOImpl implements TarefaDAO {
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
 			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
+			
+			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
 
 			criteria.select(raizTarefa).where(construtor.equal(raizTarefa.get(Tarefa_.ID), id));
 
@@ -151,7 +153,7 @@ public class TarefaDAOImpl implements TarefaDAO {
 			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
 			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
 			
-			 raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
 
 			criteria.select(raizTarefa);
 

@@ -98,3 +98,53 @@ select:focus {
     border-color: #007bff; /* Borda azul ao focar */
     outline: none; /* Remove o contorno padrão */
 }
+
+/* Estilo do menu lateral (aside) */
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #2c3e50;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo e título */
+aside div a {
+    display: block;
+    text-align: center;
+    color: #ecf0f1;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 30px;
+}
+
+/* Lista de navegação */
+aside ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin: 20px 0;
+}
+
+aside ul li a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+aside ul li a:hover {
+    background-color: #34495e;
+    border-radius: 4px;
+}
+

@@ -76,6 +76,18 @@ public class Servlet extends HttpServlet {
 				mostrarCadastroTarefa(request, response);
 				break;
 				
+			case "/editar-tarefa":
+				mostrarEditarTarefa(request, response);
+				break;
+				
+			case "/deletar-tarefa":
+				deletarTarefa(request, response);
+				break;
+				
+			case "/atualizar-tarefa":
+				atualizarTarefa(request, response);
+				break;
+				
 			case "/cadastro-tipo-tarefa":
 				mostrarCadastroTipoTarefa(request, response);
 				break;
@@ -144,6 +156,19 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 	
+	private void mostrarEditarTarefa(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		
+		Tarefa tarefa = tarefaDAO.buscarTarefaPorId(Long.parseLong(request.getParameter("id")));
+		request.setAttribute("tarefa", tarefa);
+		
+		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
+		request.setAttribute("tiposTarefa", tiposTarefa);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/editar-tarefa.jsp");
+		dispatcher.forward(request, response);
+	}
+	
 	private void mostrarCadastroTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
@@ -196,6 +221,31 @@ public class Servlet extends HttpServlet {
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("id")));
 
 		tarefaDAO.inserirTarefa(new Tarefa(nome, desc, tipoTarefa));
+
+		response.sendRedirect("home");
+
+	}
+	
+	private void atualizarTarefa(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		Long id = Long.parseLong(request.getParameter("id"));
+		String nome = request.getParameter("nome");
+		String desc = request.getParameter("desc");
+		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("tipoTarefa")));
+
+		tarefaDAO.atualizarTarefa(new Tarefa(id, nome, desc, tipoTarefa));
+
+		response.sendRedirect("home");
+
+	}
+	
+	private void deletarTarefa(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		
+		Tarefa tarefa = tarefaDAO.buscarTarefaPorId(Long.parseLong(request.getParameter("id")));
+		
+		tarefaDAO.deletarTarefa(tarefa);
 
 		response.sendRedirect("home");
 

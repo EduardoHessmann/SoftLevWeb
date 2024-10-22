@@ -44,10 +44,10 @@
                             <td>${tarefa.desc}</td>
                             <td>${tarefa.tipoTarefa.nome}</td>
                             <td>
-                                <a href="editar-maquina?id=<c:out value='${tarefa.id}'/>" class="action-button">Editar Tarefa</a>
+                                <a href="editar-tarefa?id=<c:out value='${tarefa.id}'/>" class="action-button">Editar Tarefa</a>
                             </td>
                             <td>
-                                <a href="deletar-maquina?id=<c:out value='${tarefa.id}'/>" class="action-button">Deletar Tarefa</a>
+                                <a href="deletar-tarefa?id=<c:out value='${tarefa.id}'/>" class="action-button">Deletar Tarefa</a>
                             </td>
                         </tr>
                     </c:forEach>
