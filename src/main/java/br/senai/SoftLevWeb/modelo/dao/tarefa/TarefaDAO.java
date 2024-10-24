@@ -15,5 +15,7 @@ public interface TarefaDAO {
 	Tarefa buscarTarefaPorId(Long id);
 	
 	List<Tarefa> buscarTarefasComTipoTarefa();
+	
+	List<Tarefa> buscarTarefasPorNome(String nome);
 
 }

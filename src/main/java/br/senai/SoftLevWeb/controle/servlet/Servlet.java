@@ -84,6 +84,10 @@ public class Servlet extends HttpServlet {
 				deletarTarefa(request, response);
 				break;
 				
+			case "/resultado-pesquisa-tarefa":
+				mostrarResultadoPesquisaTarefa(request, response);
+				break; 
+				
 			case "/atualizar-tarefa":
 				atualizarTarefa(request, response);
 				break;
@@ -136,6 +140,16 @@ public class Servlet extends HttpServlet {
 		request.setAttribute("tarefas", tarefas);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/home.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void mostrarResultadoPesquisaTarefa(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		
+		List<Tarefa> tarefas = tarefaDAO.buscarTarefasPorNome(request.getParameter("nomePesquisa"));
+		request.setAttribute("tarefas", tarefas);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
 

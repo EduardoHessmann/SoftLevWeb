@@ -116,7 +116,7 @@ public class TarefaDAOImpl implements TarefaDAO {
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
 			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
-			
+
 			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
 
 			criteria.select(raizTarefa).where(construtor.equal(raizTarefa.get(Tarefa_.ID), id));
@@ -152,7 +152,7 @@ public class TarefaDAOImpl implements TarefaDAO {
 			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
 			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
-			
+
 			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
 
 			criteria.select(raizTarefa);
@@ -174,6 +174,41 @@ public class TarefaDAOImpl implements TarefaDAO {
 			}
 		}
 
+		return tarefas;
+	}
+
+	public List<Tarefa> buscarTarefasPorNome(String nome) {
+		Session sessao = null;
+		List<Tarefa> tarefas = null;
+
+		try {
+			sessao = fabrica.getConexao().openSession();
+			sessao.beginTransaction();
+
+			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
+			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
+			
+			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+
+			criteria.select(raizTarefa).where(construtor.like(raizTarefa.get(Tarefa_.NOME), "%" + nome + "%"));
+
+			tarefas = sessao.createQuery(criteria).getResultList();
+
+			sessao.getTransaction().commit();
+
+		} catch (Exception sqlException) {
+
+			sqlException.printStackTrace();
+			if (sessao.getTransaction() != null) {
+				sessao.getTransaction().rollback();
+			}
+
+		} finally {
+			if (sessao != null) {
+				sessao.close();
+			}
+		}
 		return tarefas;
 	}
 
