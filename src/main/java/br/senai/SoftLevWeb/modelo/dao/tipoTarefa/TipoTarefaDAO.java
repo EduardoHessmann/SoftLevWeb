@@ -15,5 +15,7 @@ public interface TipoTarefaDAO {
 	TipoTarefa buscarTipoTarefaPorId(Long id);
 	
 	List<TipoTarefa> buscarTiposTarefa();
+	
+	List<TipoTarefa> buscarTiposTarefaPorNome(String nome);
 
 }

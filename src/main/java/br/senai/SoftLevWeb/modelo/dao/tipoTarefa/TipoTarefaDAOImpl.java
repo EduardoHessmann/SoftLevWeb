@@ -176,6 +176,37 @@ public class TipoTarefaDAOImpl implements TipoTarefaDAO {
 
 	    return tiposTarefa;
 	}
+	
+	public List<TipoTarefa> buscarTiposTarefaPorNome(String nome) {
+	    Session sessao = null;
+	    List<TipoTarefa> tiposTareas = null;
 
+	    try {
+	        sessao = fabrica.getConexao().openSession();
+	        sessao.beginTransaction();
 
+	        CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+	        CriteriaQuery<TipoTarefa> criteria = construtor.createQuery(TipoTarefa.class);
+	        Root<TipoTarefa> raizTipoTarefa = criteria.from(TipoTarefa.class);
+
+	        criteria.select(raizTipoTarefa).where(construtor.like(raizTipoTarefa.get(TipoTarefa_.NOME), "%" + nome + "%"));
+
+	        tiposTareas = sessao.createQuery(criteria).getResultList();
+
+	        sessao.getTransaction().commit();
+
+	    } catch (Exception sqlException) {
+
+	        sqlException.printStackTrace();
+	        if (sessao.getTransaction() != null) {
+	            sessao.getTransaction().rollback();
+	        }
+
+	    } finally {
+	        if (sessao != null) {
+	            sessao.close();
+	        }
+	    }
+	    return tiposTareas;
+	}
 }
