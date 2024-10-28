@@ -27,6 +27,9 @@
 					<a href="visualizar-tipos-tarefa"><span>Visualizar Tipos Tarefa</span></a>
 				</li>
 				<li>
+					<a href="visualizar-usuarios"><span>Visualizar Usuarios</span></a>
+				</li>
+				<li>
 					<a href="cadastro-desenvolvedor"><span>Novo Desenvolvedor</span></a>
 				</li>
 				<li>

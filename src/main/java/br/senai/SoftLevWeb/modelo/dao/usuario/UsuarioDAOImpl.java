@@ -1,5 +1,7 @@
 package br.senai.SoftLevWeb.modelo.dao.usuario;
 
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -212,5 +214,44 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	    }
 	    return usuario;
 	}
+	
+	public List<Usuario> buscarUsuarios() {
+
+	    Session sessao = null;
+	    List<Usuario> usuarios = null;
+
+	    try {
+	        sessao = fabrica.getConexao().openSession();
+	        sessao.beginTransaction();
+
+	        CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+	        CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
+	        Root<Usuario> raizUsuario = criteria.from(Usuario.class);
+
+	        criteria.select(raizUsuario);
+
+	        usuarios = sessao.createQuery(criteria).getResultList();
+
+	        sessao.getTransaction().commit();
+
+	    } catch (Exception sqlException) {
+
+	        sqlException.printStackTrace();
+
+	        if (sessao.getTransaction() != null) {
+	            sessao.getTransaction().rollback();
+	        }
+
+	    } finally {
+
+	        if (sessao != null) {
+	            sessao.close();
+	        }
+	    }
+
+	    return usuarios;
+	}
+
 
 }

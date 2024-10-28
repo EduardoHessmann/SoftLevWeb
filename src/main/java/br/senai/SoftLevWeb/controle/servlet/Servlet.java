@@ -119,6 +119,10 @@ public class Servlet extends HttpServlet {
 			case "/cadastro-desenvolvedor":
 				mostrarCadastroDesenvolvedor(request, response);
 				break;
+				
+			case "/visualizar-usuarios":
+				mostrarVisualizarUsuarios(request, response);
+				break;	
 
 			case "/inserir-usuario":
 				inserirUsuario(request, response);
@@ -185,6 +189,16 @@ public class Servlet extends HttpServlet {
 			throws SQLException, IOException, ServletException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-usuario.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void mostrarVisualizarUsuarios(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		
+		List<Usuario> usuarios = usuarioDAO.buscarUsuarios();
+		request.setAttribute("usuarios", usuarios);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/visualizar-usuarios.jsp");
 		dispatcher.forward(request, response);
 	}
 	
