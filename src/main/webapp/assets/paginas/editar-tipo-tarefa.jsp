@@ -23,6 +23,7 @@
 			</div>
 			<div>
 				<form action="atualizar-tipo-tarefa">
+				<input type="hidden" name="id" value="${tipoTarefa.id}">
 					<div>
 						<label>Nome</label> 
 						<input type="text" name="nome" value="${tipoTarefa.nome}">

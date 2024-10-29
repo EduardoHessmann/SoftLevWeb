@@ -116,6 +116,10 @@ public class Servlet extends HttpServlet {
 				mostrarResultadoPesquisaTipoTarefa(request, response);
 				break; 
 				
+			case "/resultado-pesquisa-usuario":
+				mostrarResultadoPesquisaUsuario(request, response);
+				break; 
+				
 			case "/cadastro-desenvolvedor":
 				mostrarCadastroDesenvolvedor(request, response);
 				break;
@@ -126,6 +130,10 @@ public class Servlet extends HttpServlet {
 
 			case "/inserir-usuario":
 				inserirUsuario(request, response);
+				break;
+				
+			case "/editar-usuario":
+				mostrarEditarUsuario(request, response);
 				break;
 				
 			case "/atualizar-usuario":
@@ -225,6 +233,16 @@ public class Servlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 	
+	private void mostrarEditarUsuario(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException{
+		
+		Usuario usuario = usuarioDAO.buscarUsuarioPorId(Long.parseLong(request.getParameter("id")));
+		request.setAttribute("usuario", usuario);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/editar-usuario.jsp");
+		dispatcher.forward(request, response);
+	}
+	
 	private void visualizarTiposTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 		
@@ -240,6 +258,16 @@ public class Servlet extends HttpServlet {
 		
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefaPorNome(request.getParameter("nome"));
 		request.setAttribute("tiposTarefa", tiposTarefa);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-tipo-tarefa.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void mostrarResultadoPesquisaUsuario(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		
+		List<Usuario> usuarios = usuarioDAO.buscarUsuariosPorNome(request.getParameter("nome"));
+		request.setAttribute("usuarios", usuarios);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-tipo-tarefa.jsp");
 		dispatcher.forward(request, response);
@@ -302,13 +330,14 @@ public class Servlet extends HttpServlet {
 	private void atualizarUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
+		Long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
 
-		usuarioDAO.atualizarUsuario(new Usuario(nome, email, senha));
+		usuarioDAO.atualizarUsuario(new Usuario(id, nome, email, senha));
 
-		response.sendRedirect("visualizar-funcionarios");
+		response.sendRedirect("visualizar-usuarios");
 
 	}
 	
@@ -319,7 +348,7 @@ public class Servlet extends HttpServlet {
 
 		usuarioDAO.deletarUsuario(usuario);
 
-		response.sendRedirect("visualizar-funcionarios");
+		response.sendRedirect("visualizar-usuarios");
 
 	}
 
@@ -376,10 +405,11 @@ public class Servlet extends HttpServlet {
 	private void atualizarTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
+		Long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
 		
-		tipoTarefaDAO.atualizarTipoTarefa(new TipoTarefa(nome, desc));
+		tipoTarefaDAO.atualizarTipoTarefa(new TipoTarefa(id, nome, desc));
 		
 		response.sendRedirect("visualizar-tipos-tarefa");
 

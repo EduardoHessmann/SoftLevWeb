@@ -37,9 +37,10 @@ public class TipoTarefa implements Serializable {
 		this.desc = desc;
 	}
 
-	public TipoTarefa(Long id, String nome) {
+	public TipoTarefa(Long id, String nome, String desc) {
 		this.id = id;
 		this.nome = nome;
+		this.desc = desc;
 	}
 
 	public Long getId() {

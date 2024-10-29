@@ -33,7 +33,7 @@
 					<a href="cadastro-desenvolvedor"><span>Novo Desenvolvedor</span></a>
 				</li>
 				<li>
-					<a href="login"><span>Sair</span></a>
+					<a href="deslogar"><span>Sair</span></a>
 				</li>
 			</ul>
 		</div>

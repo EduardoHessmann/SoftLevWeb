@@ -16,7 +16,7 @@ public interface UsuarioDAO {
 	
 	Usuario buscarUsuarioPorEmailESenha(String email, String senha);
 	
-	Usuario buscarUsuarioPorNome(String nome);
+	List<Usuario> buscarUsuariosPorNome(String nome);
 	
 	List<Usuario> buscarUsuarios();
 

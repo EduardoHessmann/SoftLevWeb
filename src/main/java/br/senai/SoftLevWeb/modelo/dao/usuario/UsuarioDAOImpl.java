@@ -183,9 +183,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return usuario;
 	}
 
-	public Usuario buscarUsuarioPorNome(String nome) {
+	public List<Usuario> buscarUsuariosPorNome(String nome) {
 	    Session sessao = null;
-	    Usuario usuario = null;
+	    List<Usuario> usuarios = null;
 
 	    try {
 	        sessao = fabrica.getConexao().openSession();
@@ -195,10 +195,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	        CriteriaQuery<Usuario> criteria = construtor.createQuery(Usuario.class);
 	        Root<Usuario> raizUsuario = criteria.from(Usuario.class);
 
-	        criteria.select(raizUsuario)
-	                .where(construtor.like(raizUsuario.get(Usuario_.NOME), "%" + nome + "%"));
-	        
-	        usuario = sessao.createQuery(criteria).uniqueResult();
+	        criteria.select(raizUsuario).where(construtor.like(raizUsuario.get(Usuario_.NOME), "%" + nome + "%"));
+
+	        usuarios = sessao.createQuery(criteria).getResultList();
 
 	        sessao.getTransaction().commit();
 
@@ -207,13 +206,15 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	        if (sessao.getTransaction() != null) {
 	            sessao.getTransaction().rollback();
 	        }
+
 	    } finally {
 	        if (sessao != null) {
 	            sessao.close();
 	        }
 	    }
-	    return usuario;
+	    return usuarios;
 	}
+
 	
 	public List<Usuario> buscarUsuarios() {
 
