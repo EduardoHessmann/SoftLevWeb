@@ -1,5 +1,7 @@
 package br.senai.SoftLevWeb.modelo.dao.desenvolvedor;
 
+import java.util.List;
+
 import br.senai.SoftLevWeb.modelo.entidade.desenvolvedor.Desenvolvedor;
 
 public interface DesenvolvedorDAO {
@@ -11,5 +13,7 @@ public interface DesenvolvedorDAO {
 	void atualizarDesenvolvedor(Desenvolvedor desenvolvedor);
 	
 	Desenvolvedor buscarDesenvolvedorPorId(Long id);
+	
+	public List<Desenvolvedor> buscarDesenvolvedores();
 
 }

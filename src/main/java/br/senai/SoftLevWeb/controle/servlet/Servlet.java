@@ -2,6 +2,7 @@ package br.senai.SoftLevWeb.controle.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -71,87 +72,91 @@ public class Servlet extends HttpServlet {
 			case "/cadastro-usuario":
 				mostrarCadastroUsuario(request, response);
 				break;
-				
+
 			case "/cadastro-tarefa":
 				mostrarCadastroTarefa(request, response);
 				break;
-				
+
 			case "/editar-tarefa":
 				mostrarEditarTarefa(request, response);
 				break;
-				
+
 			case "/deletar-tarefa":
 				deletarTarefa(request, response);
 				break;
-				
+
 			case "/resultado-pesquisa-tarefa":
 				mostrarResultadoPesquisaTarefa(request, response);
-				break; 
-				
+				break;
+
 			case "/atualizar-tarefa":
 				atualizarTarefa(request, response);
 				break;
-				
+
 			case "/cadastro-tipo-tarefa":
 				mostrarCadastroTipoTarefa(request, response);
 				break;
-				
+
 			case "/editar-tipo-tarefa":
 				mostrarEditarTipoTarefa(request, response);
 				break;
-				
+
 			case "/atualizar-tipo-tarefa":
 				atualizarTipoTarefa(request, response);
 				break;
-				
+
 			case "/deletar-tipo-tarefa":
 				deletarTipoTarefa(request, response);
 				break;
-				
+
 			case "/visualizar-tipos-tarefa":
 				visualizarTiposTarefa(request, response);
 				break;
-				
+
 			case "/resultado-pesquisa-tipo-tarefa":
 				mostrarResultadoPesquisaTipoTarefa(request, response);
-				break; 
-				
+				break;
+
 			case "/resultado-pesquisa-usuario":
 				mostrarResultadoPesquisaUsuario(request, response);
-				break; 
-				
+				break;
+
 			case "/cadastro-desenvolvedor":
 				mostrarCadastroDesenvolvedor(request, response);
 				break;
-				
+
 			case "/visualizar-usuarios":
 				mostrarVisualizarUsuarios(request, response);
-				break;	
+				break;
+
+			case "/visualizar-desenvolvedores":
+				mostrarVisualizarDesenvolvedores(request, response);
+				break;
 
 			case "/inserir-usuario":
 				inserirUsuario(request, response);
 				break;
-				
+
 			case "/editar-usuario":
 				mostrarEditarUsuario(request, response);
 				break;
-				
+
+			case "/editar-desenvolvedor":
+				mostrarEditarDesenvolvedor(request, response);
+				break;
+
 			case "/atualizar-usuario":
 				atualizarUsuario(request, response);
 				break;
-				
+
 			case "/deletar-usuario":
 				deletarUsuario(request, response);
-				break;
-
-			case "/inserir-desenvolvedor":
-				inserirDesenvolvedor(request, response);
 				break;
 
 			case "/inserir-tarefa":
 				inserirTarefa(request, response);
 				break;
-				
+
 			case "/inserir-tipo-tarefa":
 				inserirTipoTarefa(request, response);
 				break;
@@ -175,17 +180,17 @@ public class Servlet extends HttpServlet {
 
 	private void mostrarHome(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		List<Tarefa> tarefas = tarefaDAO.buscarTarefasComTipoTarefa();
 		request.setAttribute("tarefas", tarefas);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/home.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarResultadoPesquisaTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		List<Tarefa> tarefas = tarefaDAO.buscarTarefasPorNome(request.getParameter("nomePesquisa"));
 		request.setAttribute("tarefas", tarefas);
 
@@ -199,97 +204,127 @@ public class Servlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-usuario.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarVisualizarUsuarios(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		List<Usuario> usuarios = usuarioDAO.buscarUsuarios();
 		request.setAttribute("usuarios", usuarios);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/visualizar-usuarios.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
+	private void mostrarVisualizarDesenvolvedores(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		List<Usuario> usuarios = usuarioDAO.buscarUsuarios();
+		List<Usuario> desenvolvedores = new ArrayList<Usuario>();
+
+		for (Usuario usuario : usuarios) {
+			if (usuario.getNivel().equals("dev")) {
+				desenvolvedores.add(usuario);
+			}
+		}
+
+		request.setAttribute("desenvolvedores", desenvolvedores);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/visualizar-desenvolvedores.jsp");
+		dispatcher.forward(request, response);
+	}
+
+	private void mostrarEditarDesenvolvedor(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		Usuario desenvolvedor = usuarioDAO.buscarUsuarioPorId(Long.parseLong(request.getParameter("id")));
+		request.setAttribute("desenvolvedor", desenvolvedor);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/editar-desenvolvedor.jsp");
+		dispatcher.forward(request, response);
+	}
+
 	private void mostrarCadastroTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
 		request.setAttribute("tiposTarefa", tiposTarefa);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarEditarTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		Tarefa tarefa = tarefaDAO.buscarTarefaPorId(Long.parseLong(request.getParameter("id")));
 		request.setAttribute("tarefa", tarefa);
-		
+
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
 		request.setAttribute("tiposTarefa", tiposTarefa);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/editar-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarEditarUsuario(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException, ServletException{
-		
+			throws SQLException, IOException, ServletException {
+
 		Usuario usuario = usuarioDAO.buscarUsuarioPorId(Long.parseLong(request.getParameter("id")));
 		request.setAttribute("usuario", usuario);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/editar-usuario.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void visualizarTiposTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
 		request.setAttribute("tiposTarefa", tiposTarefa);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/visualizar-tipos-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarResultadoPesquisaTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefaPorNome(request.getParameter("nome"));
 		request.setAttribute("tiposTarefa", tiposTarefa);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-tipo-tarefa.jsp");
+		RequestDispatcher dispatcher = request
+				.getRequestDispatcher("assets/paginas/resultado-pesquisa-tipo-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarResultadoPesquisaUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		List<Usuario> usuarios = usuarioDAO.buscarUsuariosPorNome(request.getParameter("nome"));
 		request.setAttribute("usuarios", usuarios);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-tipo-tarefa.jsp");
+		RequestDispatcher dispatcher = request
+				.getRequestDispatcher("assets/paginas/resultado-pesquisa-tipo-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarCadastroTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-tipo-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarEditarTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		TipoTarefa tipotarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("id")));
 		request.setAttribute("tipoTarefa", tipotarefa);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/editar-tipo-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarCadastroDesenvolvedor(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
@@ -317,38 +352,64 @@ public class Servlet extends HttpServlet {
 	private void inserirUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
-		String nome = request.getParameter("nome");
-		String email = request.getParameter("email");
-		String senha = request.getParameter("senha");
+		String nivel = request.getParameter("nivel");
 
-		usuarioDAO.inserirUsuario(new Usuario(nome, email, senha));
+		if (nivel.equals("usu")) {
 
-		response.sendRedirect("login");
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
 
+			usuarioDAO.inserirUsuario(new Usuario(nome, email, nivel, senha));
+
+			response.sendRedirect("login");
+
+		} else if (nivel.equals("dev")) {
+
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+
+			desenvolvedorDAO.inserirDesenvolvedor(new Desenvolvedor(nome, email, nivel, senha));
+			usuarioDAO.inserirUsuario(new Usuario(nome, email, nivel, senha));
+
+			response.sendRedirect("login");
+		}
 	}
-	
+
 	private void atualizarUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		Long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		String email = request.getParameter("email");
+		String nivel = request.getParameter("nivel");
 		String senha = request.getParameter("senha");
 
-		usuarioDAO.atualizarUsuario(new Usuario(id, nome, email, senha));
+		usuarioDAO.atualizarUsuario(new Usuario(id, nome, email, nivel, senha));
 
-		response.sendRedirect("visualizar-usuarios");
+		if (nivel.equals("usu")) {
+			response.sendRedirect("visualizar-usuarios");
+		} else {
+			response.sendRedirect("visualizar-desenvolvedores");
+
+		}
 
 	}
-	
+
 	private void deletarUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		Usuario usuario = usuarioDAO.buscarUsuarioPorId(Long.parseLong(request.getParameter("id")));
+		
+		if (usuario.getNivel().equals("usu")) {
+			usuarioDAO.deletarUsuario(usuario);
+			response.sendRedirect("visualizar-usuarios");
+		} else {
+			usuarioDAO.deletarUsuario(usuario);
+			response.sendRedirect("visualizar-desenvolvedores");
 
-		usuarioDAO.deletarUsuario(usuario);
-
-		response.sendRedirect("visualizar-usuarios");
+		}
 
 	}
 
@@ -364,7 +425,7 @@ public class Servlet extends HttpServlet {
 		response.sendRedirect("home");
 
 	}
-	
+
 	private void atualizarTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
@@ -378,64 +439,51 @@ public class Servlet extends HttpServlet {
 		response.sendRedirect("home");
 
 	}
-	
+
 	private void deletarTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		Tarefa tarefa = tarefaDAO.buscarTarefaPorId(Long.parseLong(request.getParameter("id")));
-		
+
 		tarefaDAO.deletarTarefa(tarefa);
 
 		response.sendRedirect("home");
 
 	}
-	
+
 	private void inserirTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
-		
+
 		tipoTarefaDAO.inserirTipoTarefa(new TipoTarefa(nome, desc));
-		
+
 		response.sendRedirect("home");
 
 	}
-	
+
 	private void atualizarTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
 		Long id = Long.parseLong(request.getParameter("id"));
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
-		
+
 		tipoTarefaDAO.atualizarTipoTarefa(new TipoTarefa(id, nome, desc));
-		
+
 		response.sendRedirect("visualizar-tipos-tarefa");
 
 	}
-	
+
 	private void deletarTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
+
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("id")));
-		
+
 		tipoTarefaDAO.deletarTipoTarefa(tipoTarefa);
 
 		response.sendRedirect("visualizar-tipos-tarefa");
-
-	}
-
-	private void inserirDesenvolvedor(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException, ServletException {
-
-		String nome = request.getParameter("nome");
-		String email = request.getParameter("email");
-		String senha = request.getParameter("senha");
-
-		desenvolvedorDAO.inserirDesenvolvedor(new Desenvolvedor(nome, email, senha));
-
-		response.sendRedirect("login");
 
 	}
 

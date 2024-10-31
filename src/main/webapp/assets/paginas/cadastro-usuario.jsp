@@ -35,6 +35,14 @@
                             <input type="password" name="senha">
                         </div>
                         <div>
+                            <label>Qual o seu nível?</label>
+                            <select name="nivel">
+                            <option value="usu">usu</option> 
+                            <option value="dev">dev</option>
+                            <option value="adm">adm</option>  
+                            </select>
+                        </div>
+                        <div>
                            <input type="submit" value="Adicionar">
                         </div>
                     </form>

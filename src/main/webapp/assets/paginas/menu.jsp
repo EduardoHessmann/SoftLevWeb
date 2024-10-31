@@ -30,7 +30,7 @@
 					<a href="visualizar-usuarios"><span>Visualizar Usuarios</span></a>
 				</li>
 				<li>
-					<a href="cadastro-desenvolvedor"><span>Novo Desenvolvedor</span></a>
+					<a href="visualizar-desenvolvedores"><span>Visualizar Desenvolvedores</span></a>
 				</li>
 				<li>
 					<a href="deslogar"><span>Sair</span></a>

@@ -29,21 +29,26 @@ public class Usuario implements Serializable{
 	@Column(name = "email_usuario", length = 65, nullable = false)
 	private String email;
 	
+	@Column(name = "nivel_usuario", length = 3, columnDefinition = "CHAR(3)", nullable = false)
+	private String nivel;
+	
 	@Column(name = "senha_usuario", length = 25, nullable = false)
 	private String senha;
 	
 	public Usuario() {}
 	
-	public Usuario(String nome, String email, String senha) {
+	public Usuario(String nome, String email, String nivel, String senha) {
 		this.nome = nome;
 		this.email = email;
+		this.nivel = nivel;
 		this.senha = senha;
 	}
 	
-	public Usuario(Long id, String nome, String email, String senha) {
+	public Usuario(Long id, String nome, String email, String nivel, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.nivel = nivel;
 		this.senha = senha;
 	}
 	
@@ -71,6 +76,14 @@ public class Usuario implements Serializable{
 		this.email = email;
 	}
 	
+	public String getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(String nivel) {
+		this.nivel = nivel;
+	}
+
 	public String getSenha() {
 		return senha;
 	}

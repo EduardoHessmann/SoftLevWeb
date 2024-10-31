@@ -1,5 +1,7 @@
 package br.senai.SoftLevWeb.modelo.dao.desenvolvedor;
 
+import java.util.List;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -137,5 +139,44 @@ public class DesenvolvedorDAOImpl implements DesenvolvedorDAO {
         return desenvolvedor;
 
     }
+    
+    public List<Desenvolvedor> buscarDesenvolvedores() {
+
+        Session sessao = null;
+        List<Desenvolvedor> desenvolvedores = null;
+
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
+
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+
+            CriteriaQuery<Desenvolvedor> criteria = construtor.createQuery(Desenvolvedor.class);
+            Root<Desenvolvedor> raizDesenvolvedor = criteria.from(Desenvolvedor.class);
+
+            criteria.select(raizDesenvolvedor);
+
+            desenvolvedores = sessao.createQuery(criteria).getResultList();
+
+            sessao.getTransaction().commit();
+
+        } catch (Exception sqlException) {
+
+            sqlException.printStackTrace();
+
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
+
+        } finally {
+
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
+
+        return desenvolvedores;
+    }
+
     
 }

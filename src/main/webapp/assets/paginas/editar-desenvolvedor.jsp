@@ -19,21 +19,21 @@
     <div class="divPrincipal">
         <div>
             <div>
-                <h1>Editar Usuario</h1>
-                <a href="visualizar-usuarios">Voltar</a>
+                <h1>Editar Desenvolvedor</h1>
+                <a href="visualizar-desenvolvedores">Voltar</a>
             </div>
                 <div>
                     <form action="atualizar-usuario">
-                    <input type="hidden" name="id" value="${usuario.id}">
+                    <input type="hidden" name="id" value="${desenvolvedor.id}">
                         <div>
                             <label>Nome</label>
-                            <input type="text" name="nome" value="${usuario.nome}">
+                            <input type="text" name="nome" value="${desenvolvedor.nome}">
                         </div>
                          <div>
                             <label>Email</label>
-                            <input type="text" name="email" value="${usuario.email}">
-                        </div>
-                        <div>
+                            <input type="text" name="email" value="${desenvolvedor.email}">
+                         </div>
+                         <div>
                             <label>Qual o seu nível?</label>
                             <select name="nivel">
                             <option value="usu">usu</option> 
@@ -41,7 +41,9 @@
                             <option value="adm">adm</option>  
                             </select>
                         </div>
-                         <input type="hidden" name="senha" value="${usuario.senha}">
+                        <div>
+                         <input type="hidden" name="senha" value="${desenvolvedor.senha}">
+                         </div>
                         <div>
                            <input type="submit" value="Adicionar">
                         </div>

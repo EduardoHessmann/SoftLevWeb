@@ -28,22 +28,27 @@ public class Desenvolvedor implements Serializable {
 
 	@Column(name = "email_deselvolvedor", length = 65, nullable = false)
 	private String email;
-
-	@Column(name = "senha_desenvolvedor", length = 25, nullable = false)
+	
+	@Column(name = "nivel_desenvolvedor", length = 3, columnDefinition = "CHAR(3)", nullable = false)
+	private String nivel;
+	
+	@Column(name = "senha_usuario", length = 25, nullable = false)
 	private String senha;
 	
-	public Desenvolvedor() {};
-
-	public Desenvolvedor(Long id, String nome, String email, String senha) {
+	public Desenvolvedor() {}
+	
+	public Desenvolvedor(String nome, String email, String nivel, String senha) {
+		this.nome = nome;
+		this.email = email;
+		this.nivel = nivel;
+		this.senha = senha;
+	}
+	
+	public Desenvolvedor(Long id, String nome, String email, String nivel, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.senha = senha;
-	}
-
-	public Desenvolvedor(String nome, String email, String senha) {
-		this.nome = nome;
-		this.email = email;
+		this.nivel = nivel;
 		this.senha = senha;
 	}
 
@@ -69,6 +74,14 @@ public class Desenvolvedor implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(String nivel) {
+		this.nivel = nivel;
 	}
 
 	public String getSenha() {
