@@ -118,6 +118,7 @@ public class TarefaDAOImpl implements TarefaDAO {
 			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
 
 			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+			raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
 
 			criteria.select(raizTarefa).where(construtor.equal(raizTarefa.get(Tarefa_.ID), id));
 
@@ -154,6 +155,7 @@ public class TarefaDAOImpl implements TarefaDAO {
 			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
 
 			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+			raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
 
 			criteria.select(raizTarefa);
 
@@ -190,6 +192,7 @@ public class TarefaDAOImpl implements TarefaDAO {
 			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
 			
 			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+			raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
 
 			criteria.select(raizTarefa).where(construtor.like(raizTarefa.get(Tarefa_.NOME), "%" + nome + "%"));
 

@@ -12,8 +12,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import br.senai.SoftLevWeb.modelo.entidade.desenvolvedor.Desenvolvedor;
 import br.senai.SoftLevWeb.modelo.entidade.tipoTarefa.TipoTarefa;
 
 @Entity
@@ -27,28 +29,34 @@ public class Tarefa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_tarefa")
 	private Long id;
-	
+
 	@Column(name = "nome_tarefa", length = 30, nullable = false)
 	private String nome;
-	
-	@Column(name = "desc_tarefa", length = 30, nullable = false)
+
+	@Column(name = "desc_tarefa", length = 60, nullable = false)
 	private String desc;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_tipo_tarefa", referencedColumnName = "id_tipo_tarefa")
 	private TipoTarefa tipoTarefa;
 
-	public Tarefa(Long id, String nome, String desc, TipoTarefa tipoTarefa) {
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_desenvolvedor", referencedColumnName = "id_desenvolvedor")
+	private Desenvolvedor desenvolvedor;
+
+	public Tarefa(Long id, String nome, String desc, TipoTarefa tipoTarefa, Desenvolvedor desenvolvedor) {
 		this.id = id;
 		this.nome = nome;
 		this.desc = desc;
 		this.tipoTarefa = tipoTarefa;
+		this.desenvolvedor = desenvolvedor;
 	}
 
-	public Tarefa(String nome, String desc, TipoTarefa tipoTarefa) {
+	public Tarefa(String nome, String desc, TipoTarefa tipoTarefa, Desenvolvedor desenvolvedor) {
 		this.nome = nome;
 		this.desc = desc;
 		this.tipoTarefa = tipoTarefa;
+		this.desenvolvedor = desenvolvedor;
 	}
 
 	public Tarefa() {
@@ -85,4 +93,13 @@ public class Tarefa implements Serializable {
 	public void setTipoTarefa(TipoTarefa tipoTarefa) {
 		this.tipoTarefa = tipoTarefa;
 	}
+
+	public Desenvolvedor getDesenvolvedor() {
+		return desenvolvedor;
+	}
+
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+		this.desenvolvedor = desenvolvedor;
+	}
+
 }

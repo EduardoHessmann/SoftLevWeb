@@ -35,6 +35,7 @@
                         <th>Nome</th>
                         <th>Descrição</th>
                         <th>Tipo</th>
+                        <th>Desenvolvedor</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,7 @@
                             <td>${tarefa.nome}</td>
                             <td>${tarefa.desc}</td>
                             <td>${tarefa.tipoTarefa.nome}</td>
+                            <td>${tarefa.desenvolvedor.nome}</td>
                             <td>
                                 <a href="editar-tarefa?id=<c:out value='${tarefa.id}'/>" class="action-button">Editar Tarefa</a>
                             </td>

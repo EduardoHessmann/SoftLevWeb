@@ -42,6 +42,16 @@
 						</div>
 					</div>
 					<div>
+						<label for="desenvolvedor">Desenvolvedor</label>
+						<div class="desenvolvedor">
+							<select name="id">
+								<c:forEach var="desenvolvedor" items="${desenvolvedores}">
+									<option value="${desenvolvedor.id}">${desenvolvedor.nome}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div>
 						<input type="submit" value="Adicionar">
 					</div>
 				</form>

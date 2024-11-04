@@ -248,6 +248,9 @@ public class Servlet extends HttpServlet {
 
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
 		request.setAttribute("tiposTarefa", tiposTarefa);
+		
+		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO.buscarDesenvolvedores();
+		request.setAttribute("desenvolvedores", desenvolvedores);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-tarefa.jsp");
 		dispatcher.forward(request, response);
@@ -261,6 +264,9 @@ public class Servlet extends HttpServlet {
 
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
 		request.setAttribute("tiposTarefa", tiposTarefa);
+		
+		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO.buscarDesenvolvedores();
+		request.setAttribute("desenvolvedores", desenvolvedores);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/editar-tarefa.jsp");
 		dispatcher.forward(request, response);
@@ -419,8 +425,9 @@ public class Servlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("id")));
+		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("id")));
 
-		tarefaDAO.inserirTarefa(new Tarefa(nome, desc, tipoTarefa));
+		tarefaDAO.inserirTarefa(new Tarefa(nome, desc, tipoTarefa, desenvolvedor));
 
 		response.sendRedirect("home");
 
@@ -433,8 +440,9 @@ public class Servlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("tipoTarefa")));
+		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("id")));
 
-		tarefaDAO.atualizarTarefa(new Tarefa(id, nome, desc, tipoTarefa));
+		tarefaDAO.atualizarTarefa(new Tarefa(id, nome, desc, tipoTarefa, desenvolvedor));
 
 		response.sendRedirect("home");
 
