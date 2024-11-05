@@ -64,6 +64,10 @@ public class Servlet extends HttpServlet {
 			case "/logar":
 				logar(request, response);
 				break;
+				
+			case "/aviso-desenvolvedor-com-tarefa":
+				mostrarAvisoDesenvolvedorComTarefa(request, response);
+				break;
 
 			case "/home":
 				mostrarHome(request, response);
@@ -88,13 +92,17 @@ public class Servlet extends HttpServlet {
 			case "/resultado-pesquisa-tarefa":
 				mostrarResultadoPesquisaTarefa(request, response);
 				break;
-				
+
 			case "/resultado-pesquisa-desenvolvedor":
 				mostrarResultadoPesquisaDesenvolvedor(request, response);
 				break;
 
 			case "/atualizar-tarefa":
 				atualizarTarefa(request, response);
+				break;
+
+			case "/deletar-desenvolvedor":
+				deletarDesenvolvedor(request, response);
 				break;
 
 			case "/cadastro-tipo-tarefa":
@@ -181,6 +189,13 @@ public class Servlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/login.jsp");
 		dispatcher.forward(request, response);
 	}
+	
+	private void mostrarAvisoDesenvolvedorComTarefa(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/aviso-desenvolvedor-com-tarefa.jsp");
+		dispatcher.forward(request, response);
+	}
 
 	private void mostrarHome(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
@@ -222,28 +237,22 @@ public class Servlet extends HttpServlet {
 	private void mostrarVisualizarDesenvolvedores(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
-		List<Usuario> usuarios = usuarioDAO.buscarUsuarios();
-		List<Usuario> desenvolvedores = new ArrayList<Usuario>();
-
-		for (Usuario usuario : usuarios) {
-			if (usuario.getNivel().equals("dev")) {
-				desenvolvedores.add(usuario);
-			}
-		}
-
+		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO.buscarDesenvolvedores();
 		request.setAttribute("desenvolvedores", desenvolvedores);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/visualizar-desenvolvedores.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarResultadoPesquisaDesenvolvedor(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
-		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO.buscarDesenvolvedoresPorNome(request.getParameter("nome"));
+		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO
+				.buscarDesenvolvedoresPorNome(request.getParameter("nome"));
 		request.setAttribute("desenvolvedores", desenvolvedores);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-desenvolvedor.jsp");
+		RequestDispatcher dispatcher = request
+				.getRequestDispatcher("assets/paginas/resultado-pesquisa-desenvolvedor.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -262,7 +271,7 @@ public class Servlet extends HttpServlet {
 
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
 		request.setAttribute("tiposTarefa", tiposTarefa);
-		
+
 		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO.buscarDesenvolvedores();
 		request.setAttribute("desenvolvedores", desenvolvedores);
 
@@ -278,7 +287,7 @@ public class Servlet extends HttpServlet {
 
 		List<TipoTarefa> tiposTarefa = tipoTarefaDAO.buscarTiposTarefa();
 		request.setAttribute("tiposTarefa", tiposTarefa);
-		
+
 		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO.buscarDesenvolvedores();
 		request.setAttribute("desenvolvedores", desenvolvedores);
 
@@ -421,15 +430,43 @@ public class Servlet extends HttpServlet {
 			throws SQLException, IOException, ServletException {
 
 		Usuario usuario = usuarioDAO.buscarUsuarioPorId(Long.parseLong(request.getParameter("id")));
-		
-		if (usuario.getNivel().equals("usu")) {
-			usuarioDAO.deletarUsuario(usuario);
-			response.sendRedirect("visualizar-usuarios");
+
+		usuarioDAO.deletarUsuario(usuario);
+
+		response.sendRedirect("visualizar-usuarios");
+
+	}
+
+	private void deletarDesenvolvedor(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		Desenvolvedor desenvolvedor = desenvolvedorDAO
+				.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("id")));
+		Usuario usuario = usuarioDAO.buscarUsuarioPorId(Long.parseLong(request.getParameter("id")));
+
+		List<Tarefa> tarefas = tarefaDAO.buscarTarefasComTipoTarefa();
+
+		boolean temTarefaParaDesenvolvedor = false;
+
+		for (Tarefa tarefa : tarefas) {
+			if (tarefa.getDesenvolvedor().getNome().equals(desenvolvedor.getNome())) {
+				temTarefaParaDesenvolvedor = true;
+			}
+		}
+
+		if (temTarefaParaDesenvolvedor) {
+
+			response.sendRedirect("aviso-desenvolvedor-com-tarefa");
+
 		} else {
+
+			desenvolvedorDAO.deletarDesenvolvedor(desenvolvedor);
 			usuarioDAO.deletarUsuario(usuario);
 			response.sendRedirect("visualizar-desenvolvedores");
 
 		}
+
+		response.sendRedirect("visualizar-desenvolvedores");
 
 	}
 
@@ -439,7 +476,8 @@ public class Servlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("tipoTarefa")));
-		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("Desenvolvedor")));
+		Desenvolvedor desenvolvedor = desenvolvedorDAO
+				.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("Desenvolvedor")));
 
 		tarefaDAO.inserirTarefa(new Tarefa(nome, desc, tipoTarefa, desenvolvedor));
 
@@ -454,7 +492,8 @@ public class Servlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("tipoTarefa")));
-		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("desenvolvedor")));
+		Desenvolvedor desenvolvedor = desenvolvedorDAO
+				.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("desenvolvedor")));
 
 		tarefaDAO.atualizarTarefa(new Tarefa(id, nome, desc, tipoTarefa, desenvolvedor));
 

@@ -32,7 +32,7 @@ public class Desenvolvedor implements Serializable {
 	@Column(name = "nivel_desenvolvedor", length = 3, columnDefinition = "CHAR(3)", nullable = false)
 	private String nivel;
 	
-	@Column(name = "senha_usuario", length = 25, nullable = false)
+	@Column(name = "senha_desenvolvedor", length = 25, nullable = false)
 	private String senha;
 	
 	public Desenvolvedor() {}

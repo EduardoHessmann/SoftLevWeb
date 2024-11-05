@@ -45,7 +45,7 @@
                                 <a href="editar-desenvolvedor?id=<c:out value='${desenvolvedor.id}'/>" class="action-button">Editar Desenvolvedor</a>
                             </td>
                             <td>
-                                <a href="deletar-usuario?id=<c:out value='${desenvolvedor.id}'/>" class="action-button">Deletar Desenvolvedor </a>
+                                <a href="deletar-desenvolvedor?id=<c:out value='${desenvolvedor.id}'/>" class="action-button">Deletar Desenvolvedor </a>
                             </td>
                         </tr>
                     </c:forEach>
