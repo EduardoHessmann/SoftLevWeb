@@ -32,7 +32,7 @@
 					<div>
 						<label for="tipo-tarefa">Tipo da Tarefa</label>
 						<div class="tipo-tarefa">
-							<select name="id">
+							<select name="tipoTarefa">
 								<c:forEach var="tipoTarefa" items="${tiposTarefa}">
 									<option value="${tipoTarefa.id}">${tipoTarefa.nome}</option>
 								</c:forEach>
@@ -44,7 +44,7 @@
 					<div>
 						<label for="desenvolvedor">Desenvolvedor</label>
 						<div class="desenvolvedor">
-							<select name="id">
+							<select name="Desenvolvedor">
 								<c:forEach var="desenvolvedor" items="${desenvolvedores}">
 									<option value="${desenvolvedor.id}">${desenvolvedor.nome}</option>
 								</c:forEach>

@@ -47,7 +47,7 @@
 					<div>
 						<label for="desenvolvedor">Desenvolvedor</label>
 						<div class="desenvolvedor">
-							<select name="id">
+							<select name="desenvolvedor">
 								<c:forEach var="desenvolvedor" items="${desenvolvedores}">
 									<option value="${desenvolvedor.id}">${desenvolvedor.nome}</option>
 								</c:forEach>

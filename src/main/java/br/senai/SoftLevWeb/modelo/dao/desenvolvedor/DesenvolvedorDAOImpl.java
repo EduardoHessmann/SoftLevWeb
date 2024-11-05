@@ -177,6 +177,39 @@ public class DesenvolvedorDAOImpl implements DesenvolvedorDAO {
 
         return desenvolvedores;
     }
+    
+    public List<Desenvolvedor> buscarDesenvolvedoresPorNome(String nome) {
+        Session sessao = null;
+        List<Desenvolvedor> desenvolvedores = null;
+
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
+
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+            CriteriaQuery<Desenvolvedor> criteria = construtor.createQuery(Desenvolvedor.class);
+            Root<Desenvolvedor> raizDesenvolvedor = criteria.from(Desenvolvedor.class);
+
+            criteria.select(raizDesenvolvedor).where(construtor.like(raizDesenvolvedor.get(Desenvolvedor_.NOME), "%" + nome + "%"));
+
+            desenvolvedores = sessao.createQuery(criteria).getResultList();
+
+            sessao.getTransaction().commit();
+
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
+
+        } finally {
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
+        return desenvolvedores;
+    }
+
 
     
 }

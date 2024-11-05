@@ -15,5 +15,7 @@ public interface DesenvolvedorDAO {
 	Desenvolvedor buscarDesenvolvedorPorId(Long id);
 	
 	public List<Desenvolvedor> buscarDesenvolvedores();
+	
+	public List<Desenvolvedor> buscarDesenvolvedoresPorNome(String nome);
 
 }

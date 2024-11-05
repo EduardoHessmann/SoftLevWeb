@@ -88,6 +88,10 @@ public class Servlet extends HttpServlet {
 			case "/resultado-pesquisa-tarefa":
 				mostrarResultadoPesquisaTarefa(request, response);
 				break;
+				
+			case "/resultado-pesquisa-desenvolvedor":
+				mostrarResultadoPesquisaDesenvolvedor(request, response);
+				break;
 
 			case "/atualizar-tarefa":
 				atualizarTarefa(request, response);
@@ -230,6 +234,16 @@ public class Servlet extends HttpServlet {
 		request.setAttribute("desenvolvedores", desenvolvedores);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/visualizar-desenvolvedores.jsp");
+		dispatcher.forward(request, response);
+	}
+	
+	private void mostrarResultadoPesquisaDesenvolvedor(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		List<Desenvolvedor> desenvolvedores = desenvolvedorDAO.buscarDesenvolvedoresPorNome(request.getParameter("nome"));
+		request.setAttribute("desenvolvedores", desenvolvedores);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-desenvolvedor.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -424,8 +438,8 @@ public class Servlet extends HttpServlet {
 
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
-		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("id")));
-		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("id")));
+		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("tipoTarefa")));
+		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("Desenvolvedor")));
 
 		tarefaDAO.inserirTarefa(new Tarefa(nome, desc, tipoTarefa, desenvolvedor));
 
@@ -440,7 +454,7 @@ public class Servlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String desc = request.getParameter("desc");
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("tipoTarefa")));
-		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("id")));
+		Desenvolvedor desenvolvedor =  desenvolvedorDAO.buscarDesenvolvedorPorId(Long.parseLong(request.getParameter("desenvolvedor")));
 
 		tarefaDAO.atualizarTarefa(new Tarefa(id, nome, desc, tipoTarefa, desenvolvedor));
 
