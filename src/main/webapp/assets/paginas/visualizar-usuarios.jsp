@@ -24,11 +24,10 @@
             </div>
             <div>
                 <form action="resultado-pesquisa-usuario" method="GET">
-                    <input type="text" placeholder="Pesquisar usuario por nome..." name="nome">
+                    <input type="text" placeholder="Pesquisar usuario por nome..." name="nomePesquisa">
                     <button type="submit">Pesquisar</button>
                 </form>
             </div>
-
             <table>
                 <thead>
                     <tr>

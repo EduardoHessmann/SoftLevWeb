@@ -24,7 +24,7 @@
             </div>
             <div>
                 <form action="resultado-pesquisa-tarefa" method="GET">
-                    <input type="text" placeholder="Pesquisar tarefas..." name="nome">
+                    <input type="text" placeholder="Pesquisar tarefas..." name="nomePesquisa">
                     <button type="submit">Pesquisar</button>
                 </form>
             </div>

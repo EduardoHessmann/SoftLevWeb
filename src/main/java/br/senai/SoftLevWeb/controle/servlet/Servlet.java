@@ -329,11 +329,11 @@ public class Servlet extends HttpServlet {
 	private void mostrarResultadoPesquisaUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
-		List<Usuario> usuarios = usuarioDAO.buscarUsuariosPorNome(request.getParameter("nome"));
+		List<Usuario> usuarios = usuarioDAO.buscarUsuariosPorNome(request.getParameter("nomePesquisa"));
 		request.setAttribute("usuarios", usuarios);
 
 		RequestDispatcher dispatcher = request
-				.getRequestDispatcher("assets/paginas/resultado-pesquisa-tipo-tarefa.jsp");
+				.getRequestDispatcher("assets/paginas/resultado-pesquisa-usuario.jsp");
 		dispatcher.forward(request, response);
 	}
 
