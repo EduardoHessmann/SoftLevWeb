@@ -64,7 +64,7 @@ public class Servlet extends HttpServlet {
 			case "/logar":
 				logar(request, response);
 				break;
-				
+
 			case "/aviso-desenvolvedor-com-tarefa":
 				mostrarAvisoDesenvolvedorComTarefa(request, response);
 				break;
@@ -168,7 +168,7 @@ public class Servlet extends HttpServlet {
 			case "/inserir-tarefa":
 				inserirTarefa(request, response);
 				break;
-				
+
 			case "/tipo-tarefa-tem-tarefa":
 				mostrarTipoTarefaTemTarefa(request, response);
 				break;
@@ -193,11 +193,12 @@ public class Servlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/login.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarAvisoDesenvolvedorComTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/aviso-desenvolvedor-com-tarefa.jsp");
+		RequestDispatcher dispatcher = request
+				.getRequestDispatcher("assets/paginas/aviso-desenvolvedor-com-tarefa.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -336,8 +337,7 @@ public class Servlet extends HttpServlet {
 		List<Usuario> usuarios = usuarioDAO.buscarUsuariosPorNome(request.getParameter("nomePesquisa"));
 		request.setAttribute("usuarios", usuarios);
 
-		RequestDispatcher dispatcher = request
-				.getRequestDispatcher("assets/paginas/resultado-pesquisa-usuario.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/resultado-pesquisa-usuario.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -364,7 +364,7 @@ public class Servlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-desenvolvedor.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	private void mostrarTipoTarefaTemTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
@@ -394,17 +394,7 @@ public class Servlet extends HttpServlet {
 
 		String nivel = request.getParameter("nivel");
 
-		if (nivel.equals("usu")) {
-
-			String nome = request.getParameter("nome");
-			String email = request.getParameter("email");
-			String senha = request.getParameter("senha");
-
-			usuarioDAO.inserirUsuario(new Usuario(nome, email, nivel, senha));
-
-			response.sendRedirect("login");
-
-		} else if (nivel.equals("dev")) {
+		if (nivel.equals("dev")) {
 
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
@@ -414,24 +404,42 @@ public class Servlet extends HttpServlet {
 			usuarioDAO.inserirUsuario(new Usuario(nome, email, nivel, senha));
 
 			response.sendRedirect("login");
+
+		} else {
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+
+			usuarioDAO.inserirUsuario(new Usuario(nome, email, nivel, senha));
+
+			response.sendRedirect("login");
+
 		}
 	}
 
 	private void atualizarUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
 
-		Long id = Long.parseLong(request.getParameter("id"));
-		String nome = request.getParameter("nome");
-		String email = request.getParameter("email");
 		String nivel = request.getParameter("nivel");
-		String senha = request.getParameter("senha");
 
-		usuarioDAO.atualizarUsuario(new Usuario(id, nome, email, nivel, senha));
+		if (nivel.equals("dev")) {
+			Long id = Long.parseLong(request.getParameter("id"));
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
 
-		if (nivel.equals("usu")) {
-			response.sendRedirect("visualizar-usuarios");
-		} else {
+			desenvolvedorDAO.atualizarDesenvolvedor(new Desenvolvedor(id, nome, email, nivel, senha));
+			usuarioDAO.atualizarUsuario(new Usuario(id, nome, email, nivel, senha));	
 			response.sendRedirect("visualizar-desenvolvedores");
+			
+		} else {
+			Long id = Long.parseLong(request.getParameter("id"));
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+
+			usuarioDAO.atualizarUsuario(new Usuario(id, nome, email, nivel, senha));
+			response.sendRedirect("visualizar-usuarios");
 
 		}
 
@@ -548,28 +556,27 @@ public class Servlet extends HttpServlet {
 
 	private void deletarTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
-		
 
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("id")));
-		
+
 		List<Tarefa> tarefas = tarefaDAO.buscarTarefasComTipoTarefa();
-		
+
 		boolean temTarefaParaTipoTarefa = false;
-		
+
 		for (Tarefa tarefa : tarefas) {
 			if (tarefa.getTipoTarefa().getId().equals(tipoTarefa.getId())) {
 				temTarefaParaTipoTarefa = true;
-				
+
 			}
 		}
-		
+
 		if (temTarefaParaTipoTarefa) {
 			response.sendRedirect("tipo-tarefa-tem-tarefa");
-			
-		}else {
+
+		} else {
 			tipoTarefaDAO.deletarTipoTarefa(tipoTarefa);
 			response.sendRedirect("visualizar-tipos-tarefa");
-			
+
 		}
 
 	}

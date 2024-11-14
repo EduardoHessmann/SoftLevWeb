@@ -36,6 +36,7 @@
                          <div>
                             <label>Qual o seu nível?</label>
                             <select name="nivel">
+                             <option value="${desenvolvedor.nivel}">${desenvolvedor.nivel}</option> 
                             <option value="usu">usu</option> 
                             <option value="dev">dev</option>
                             <option value="adm">adm</option>  
