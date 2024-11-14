@@ -168,6 +168,10 @@ public class Servlet extends HttpServlet {
 			case "/inserir-tarefa":
 				inserirTarefa(request, response);
 				break;
+				
+			case "/tipo-tarefa-tem-tarefa":
+				mostrarTipoTarefaTemTarefa(request, response);
+				break;
 
 			case "/inserir-tipo-tarefa":
 				inserirTipoTarefa(request, response);
@@ -360,6 +364,13 @@ public class Servlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/cadastro-desenvolvedor.jsp");
 		dispatcher.forward(request, response);
 	}
+	
+	private void mostrarTipoTarefaTemTarefa(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("assets/paginas/tipo-tarefa-tem-tarefa.jsp");
+		dispatcher.forward(request, response);
+	}
 
 	private void logar(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
@@ -466,8 +477,6 @@ public class Servlet extends HttpServlet {
 
 		}
 
-		response.sendRedirect("visualizar-desenvolvedores");
-
 	}
 
 	private void inserirTarefa(HttpServletRequest request, HttpServletResponse response)
@@ -539,12 +548,29 @@ public class Servlet extends HttpServlet {
 
 	private void deletarTipoTarefa(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
+		
 
 		TipoTarefa tipoTarefa = tipoTarefaDAO.buscarTipoTarefaPorId(Long.parseLong(request.getParameter("id")));
-
-		tipoTarefaDAO.deletarTipoTarefa(tipoTarefa);
-
-		response.sendRedirect("visualizar-tipos-tarefa");
+		
+		List<Tarefa> tarefas = tarefaDAO.buscarTarefasComTipoTarefa();
+		
+		boolean temTarefaParaTipoTarefa = false;
+		
+		for (Tarefa tarefa : tarefas) {
+			if (tarefa.getTipoTarefa().getId().equals(tipoTarefa.getId())) {
+				temTarefaParaTipoTarefa = true;
+				
+			}
+		}
+		
+		if (temTarefaParaTipoTarefa) {
+			response.sendRedirect("tipo-tarefa-tem-tarefa");
+			
+		}else {
+			tipoTarefaDAO.deletarTipoTarefa(tipoTarefa);
+			response.sendRedirect("visualizar-tipos-tarefa");
+			
+		}
 
 	}
 
