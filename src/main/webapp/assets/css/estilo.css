@@ -1,0 +1,150 @@
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Cor de fundo suave */
+    margin: 0;
+    padding: 20px;
+}
+
+.divPrincipal {
+    max-width: 800px; /* Largura máxima da div */
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 20px;
+    background-color: #fff; /* Fundo branco para contraste */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para profundidade */
+}
+
+/* Estilos dos Botões */
+button, input[type="submit"] {
+    background-color: #007bff; /* Azul para botões padrão */
+    color: white; /* Texto branco */
+    border: none; /* Sem borda */
+    padding: 10px 15px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Cursor de ponteiro */
+    font-size: 16px; /* Tamanho da fonte */
+    transition: background-color 0.3s; /* Transição suave de cor */
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+/* Estilos Específicos para Botões de Ação */
+a.action-button {
+    padding: 10px 15px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    text-decoration: none; /* Sem sublinhado */
+    display: inline-block; /* Permite estilização */
+}
+
+/* Botão de Deletar (vermelho) */
+a.action-button.delete {
+    background-color: #dc3545; /* Vermelho */
+    color: white; /* Texto branco */
+}
+
+a.action-button.delete:hover {
+    background-color: #c82333; /* Vermelho mais escuro ao passar o mouse */
+}
+
+/* Botão de Editar (verde) */
+a.action-button.edit {
+    background-color: #28a745; /* Verde */
+    color: white; /* Texto branco */
+}
+
+a.action-button.edit:hover {
+    background-color: #218838; /* Verde mais escuro ao passar o mouse */
+}
+
+/* Estilo dos Links de Navegação */
+a {
+    color: #007bff; /* Azul para links */
+    text-decoration: none; /* Sem sublinhado */
+    transition: color 0.3s; /* Transição suave de cor */
+}
+
+a:hover {
+    color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+/* Estilos para Formularios */
+form {
+    margin-top: 20px; /* Espaço acima do formulário */
+}
+
+label {
+    display: block; /* Cada label em sua linha */
+    margin-bottom: 5px; /* Espaço abaixo da label */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%; /* Largura total */
+    padding: 10px; /* Espaçamento interno */
+    border: 1px solid #ccc; /* Borda leve */
+    border-radius: 5px; /* Bordas arredondadas */
+    margin-bottom: 15px; /* Espaço abaixo do campo */
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus {
+    border-color: #007bff; /* Borda azul ao focar */
+    outline: none; /* Remove o contorno padrão */
+}
+
+/* Estilo do menu lateral (aside) */
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #2c3e50;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo e título */
+aside div a {
+    display: block;
+    text-align: center;
+    color: #ecf0f1;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 30px;
+}
+
+/* Lista de navegação */
+aside ul {
+    list-style: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin: 20px 0;
+}
+
+aside ul li a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+aside ul li a:hover {
+    background-color: #34495e;
+    border-radius: 4px;
+}
+
