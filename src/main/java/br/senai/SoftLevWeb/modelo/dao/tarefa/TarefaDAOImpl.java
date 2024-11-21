@@ -13,206 +13,250 @@ import br.senai.SoftLevWeb.connectionFactory.ConnectionFactory;
 import br.senai.SoftLevWeb.modelo.entidade.tarefa.Tarefa;
 import br.senai.SoftLevWeb.modelo.entidade.tarefa.Tarefa_;
 
+/**
+ * Implementação da interface TarefaDAO que define os métodos para realizar operações
+ * de CRUD (Create, Read, Update, Delete) na entidade Tarefa.
+ */
 public class TarefaDAOImpl implements TarefaDAO {
 
-	private ConnectionFactory fabrica;
+    private ConnectionFactory fabrica;
 
-	public TarefaDAOImpl() {
-		fabrica = new ConnectionFactory();
-	}
+    /**
+     * Construtor que inicializa a fábrica de conexões para o banco de dados.
+     */
+    public TarefaDAOImpl() {
+        fabrica = new ConnectionFactory();
+    }
 
-	public void inserirTarefa(Tarefa Tarefa) {
-		Session sessao = null;
+    /**
+     * Insere uma nova Tarefa no banco de dados.
+     *
+     * @param Tarefa A tarefa a ser inserida.
+     */
+    public void inserirTarefa(Tarefa Tarefa) {
+        Session sessao = null;
 
-		try {
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+            // Salva a tarefa no banco de dados
+            sessao.save(Tarefa);
 
-			sessao.save(Tarefa);
+            sessao.getTransaction().commit();
 
-			sessao.getTransaction().commit();
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
 
-		} catch (Exception sqlException) {
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
 
-			sqlException.printStackTrace();
+        } finally {
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
+    }
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+    /**
+     * Deleta uma Tarefa existente no banco de dados.
+     *
+     * @param Tarefa A tarefa a ser deletada.
+     */
+    public void deletarTarefa(Tarefa Tarefa) {
+        Session sessao = null;
 
-		} finally {
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-	}
+            // Deleta a tarefa do banco de dados
+            sessao.delete(Tarefa);
 
-	public void deletarTarefa(Tarefa Tarefa) {
-		Session sessao = null;
+            sessao.getTransaction().commit();
 
-		try {
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
 
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
 
-			sessao.delete(Tarefa);
+        } finally {
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
+    }
 
-			sessao.getTransaction().commit();
+    /**
+     * Atualiza os dados de uma Tarefa existente no banco de dados.
+     *
+     * @param tipoTarefa A tarefa a ser atualizada.
+     */
+    public void atualizarTarefa(Tarefa tipoTarefa) {
+        Session sessao = null;
 
-		} catch (Exception sqlException) {
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			sqlException.printStackTrace();
+            // Atualiza os dados da tarefa no banco de dados
+            sessao.update(tipoTarefa);
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+            sessao.getTransaction().commit();
 
-		} finally {
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
 
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-	}
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
 
-	public void atualizarTarefa(Tarefa tipoTarefa) {
-		Session sessao = null;
+        } finally {
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
+    }
 
-		try {
+    /**
+     * Busca uma tarefa pelo seu ID.
+     *
+     * @param id O ID da tarefa a ser buscada.
+     * @return A tarefa correspondente ao ID fornecido.
+     */
+    public Tarefa buscarTarefaPorId(Long id) {
+        Session sessao = null;
+        Tarefa tarefa = null;
 
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			sessao.update(tipoTarefa);
+            // Cria um construtor de consulta
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+            CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
+            Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
 
-			sessao.getTransaction().commit();
+            // Faz um join com as entidades relacionadas
+            raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+            raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
 
-		} catch (Exception sqlException) {
+            // Define a condição de busca pela ID
+            criteria.select(raizTarefa).where(construtor.equal(raizTarefa.get(Tarefa_.ID), id));
 
-			sqlException.printStackTrace();
+            // Executa a consulta e retorna o resultado
+            tarefa = sessao.createQuery(criteria).getSingleResult();
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+            sessao.getTransaction().commit();
 
-		} finally {
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
 
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-	}
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
 
-	public Tarefa buscarTarefaPorId(Long id) {
-		Session sessao = null;
-		Tarefa tarefa = null;
+        } finally {
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
 
-		try {
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+        return tarefa;
+    }
 
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
-			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
+    /**
+     * Busca todas as tarefas com seus tipos de tarefa e desenvolvedores relacionados.
+     *
+     * @return Lista de tarefas com os tipos e desenvolvedores associados.
+     */
+    public List<Tarefa> buscarTarefasComTipoTarefa() {
+        Session sessao = null;
+        List<Tarefa> tarefas = null;
 
-			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
-			raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			criteria.select(raizTarefa).where(construtor.equal(raizTarefa.get(Tarefa_.ID), id));
+            // Cria um construtor de consulta
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+            CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
+            Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
 
-			tarefa = sessao.createQuery(criteria).getSingleResult();
+            // Faz um join com as entidades relacionadas
+            raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+            raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
 
-			sessao.getTransaction().commit();
+            // Executa a consulta para buscar todas as tarefas
+            criteria.select(raizTarefa);
 
-		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+            tarefas = sessao.createQuery(criteria).getResultList();
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+            sessao.getTransaction().commit();
 
-		} finally {
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
 
-		return tarefa;
-	}
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
 
-	public List<Tarefa> buscarTarefasComTipoTarefa() {
-		Session sessao = null;
-		List<Tarefa> tarefas = null;
+        } finally {
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
 
-		try {
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+        return tarefas;
+    }
 
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
-			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
+    /**
+     * Busca as tarefas pelo nome.
+     *
+     * @param nome O nome da tarefa a ser buscada.
+     * @return Lista de tarefas que contêm o nome fornecido.
+     */
+    public List<Tarefa> buscarTarefasPorNome(String nome) {
+        Session sessao = null;
+        List<Tarefa> tarefas = null;
 
-			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
-			raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			criteria.select(raizTarefa);
+            // Cria um construtor de consulta
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+            CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
+            Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
+            
+            // Faz um join com as entidades relacionadas
+            raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
+            raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
 
-			tarefas = sessao.createQuery(criteria).getResultList();
+            // Define a condição de busca pelo nome
+            criteria.select(raizTarefa).where(construtor.like(raizTarefa.get(Tarefa_.NOME), "%" + nome + "%"));
 
-			sessao.getTransaction().commit();
+            // Executa a consulta e retorna o resultado
+            tarefas = sessao.createQuery(criteria).getResultList();
 
-		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
+            sessao.getTransaction().commit();
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+        } catch (Exception sqlException) {
 
-		} finally {
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
+            sqlException.printStackTrace();
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();
+            }
 
-		return tarefas;
-	}
-
-	public List<Tarefa> buscarTarefasPorNome(String nome) {
-		Session sessao = null;
-		List<Tarefa> tarefas = null;
-
-		try {
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-			CriteriaQuery<Tarefa> criteria = construtor.createQuery(Tarefa.class);
-			Root<Tarefa> raizTarefa = criteria.from(Tarefa.class);
-			
-			raizTarefa.fetch("tipoTarefa", JoinType.LEFT);
-			raizTarefa.fetch("desenvolvedor", JoinType.LEFT);
-
-			criteria.select(raizTarefa).where(construtor.like(raizTarefa.get(Tarefa_.NOME), "%" + nome + "%"));
-
-			tarefas = sessao.createQuery(criteria).getResultList();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-
-			sqlException.printStackTrace();
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-		return tarefas;
-	}
+        } finally {
+            if (sessao != null) {
+                sessao.close();
+            }
+        }
+        return tarefas;
+    }
 
 }

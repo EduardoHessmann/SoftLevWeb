@@ -14,199 +14,220 @@ import br.senai.SoftLevWeb.modelo.entidade.tipoTarefa.TipoTarefa_;
 
 public class TipoTarefaDAOImpl implements TipoTarefaDAO {
 
-	private ConnectionFactory fabrica;
+    // A conexão com o banco de dados
+    private ConnectionFactory fabrica;
+
+    // Construtor padrão, inicializando a fábrica de conexões
+    public TipoTarefaDAOImpl() {
+        fabrica = new ConnectionFactory();
+    }
+
+    /**
+     * Insere um novo TipoTarefa no banco de dados.
+     * 
+     * @param tipoTarefa O objeto TipoTarefa a ser inserido.
+     */
+    public void inserirTipoTarefa(TipoTarefa tipoTarefa) {
+        Session sessao = null;
+
+        try {
+            sessao = fabrica.getConexao().openSession();  // Obtém uma sessão do Hibernate
+            sessao.beginTransaction();  // Inicia uma transação
+
+            sessao.save(tipoTarefa);  // Salva o objeto TipoTarefa no banco
+
+            sessao.getTransaction().commit();  // Comita a transação
+
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();  // Exibe o erro no console
+
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();  // Reverte a transação em caso de erro
+            }
+
+        } finally {
+            if (sessao != null) {
+                sessao.close();  // Fecha a sessão
+            }
+        }
+    }
+
+    /**
+     * Deleta um TipoTarefa existente no banco de dados.
+     * 
+     * @param tipoTarefa O objeto TipoTarefa a ser deletado.
+     */
+    public void deletarTipoTarefa(TipoTarefa tipoTarefa) {
+        Session sessao = null;
+
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
+
+            sessao.delete(tipoTarefa);  // Deleta o TipoTarefa do banco
+
+            sessao.getTransaction().commit();  // Comita a transação
+
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();  // Reverte a transação em caso de erro
+            }
+
+        } finally {
+            if (sessao != null) {
+                sessao.close();  // Fecha a sessão
+            }
+        }
+    }
 
-	public TipoTarefaDAOImpl() {
-		fabrica = new ConnectionFactory();
-	}
+    /**
+     * Atualiza um TipoTarefa existente no banco de dados.
+     * 
+     * @param tipoTarefa O objeto TipoTarefa a ser atualizado.
+     */
+    public void atualizarTipoTarefa(TipoTarefa tipoTarefa) {
+        Session sessao = null;
+
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-	public void inserirTipoTarefa(TipoTarefa tipoTarefa) {
-		Session sessao = null;
+            sessao.update(tipoTarefa);  // Atualiza o objeto TipoTarefa no banco
+
+            sessao.getTransaction().commit();  // Comita a transação
+
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();  // Reverte a transação em caso de erro
+            }
+
+        } finally {
+            if (sessao != null) {
+                sessao.close();  // Fecha a sessão
+            }
+        }
+    }
+
+    /**
+     * Busca um TipoTarefa no banco de dados através de seu ID.
+     * 
+     * @param id O ID do TipoTarefa a ser buscado.
+     * @return O objeto TipoTarefa encontrado, ou null se não encontrado.
+     */
+    public TipoTarefa buscarTipoTarefaPorId(Long id) {
+        Session sessao = null;
+        TipoTarefa tipoTarefa = null;
 
-		try {
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+            CriteriaQuery<TipoTarefa> criteria = construtor.createQuery(TipoTarefa.class);
+            Root<TipoTarefa> raizTipoTarefa = criteria.from(TipoTarefa.class);
 
-			sessao.save(tipoTarefa);
+            criteria.select(raizTipoTarefa).where(construtor.equal(raizTipoTarefa.get(TipoTarefa_.ID), id));
 
-			sessao.getTransaction().commit();
+            tipoTarefa = sessao.createQuery(criteria).getSingleResult();  // Busca o TipoTarefa pelo ID
 
-		} catch (Exception sqlException) {
+            sessao.getTransaction().commit();
 
-			sqlException.printStackTrace();
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();  // Reverte a transação em caso de erro
+            }
 
-		} finally {
+        } finally {
+            if (sessao != null) {
+                sessao.close();  // Fecha a sessão
+            }
+        }
 
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-	}
+        return tipoTarefa;  // Retorna o TipoTarefa encontrado
+    }
 
-	public void deletarTipoTarefa(TipoTarefa tipoTarefa) {
-		Session sessao = null;
+    /**
+     * Busca todos os TipoTarefas no banco de dados.
+     * 
+     * @return Uma lista de objetos TipoTarefa.
+     */
+    public List<TipoTarefa> buscarTiposTarefa() {
 
-		try {
+        Session sessao = null;
+        List<TipoTarefa> tiposTarefa = null;
 
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			sessao.delete(tipoTarefa);
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
 
-			sessao.getTransaction().commit();
+            CriteriaQuery<TipoTarefa> criteria = construtor.createQuery(TipoTarefa.class);
+            Root<TipoTarefa> raizTipoTarefa = criteria.from(TipoTarefa.class);
 
-		} catch (Exception sqlException) {
+            criteria.select(raizTipoTarefa);  // Seleciona todos os TipoTarefas
 
-			sqlException.printStackTrace();
+            tiposTarefa = sessao.createQuery(criteria).getResultList();  // Executa a consulta e armazena os resultados
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+            sessao.getTransaction().commit();
 
-		} finally {
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
 
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-	}
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();  // Reverte a transação em caso de erro
+            }
 
-	public void atualizarTipoTarefa(TipoTarefa tipoTarefa) {
-		Session sessao = null;
+        } finally {
+            if (sessao != null) {
+                sessao.close();  // Fecha a sessão
+            }
+        }
 
-		try {
+        return tiposTarefa;  // Retorna a lista de TipoTarefas
+    }
 
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
+    /**
+     * Busca TipoTarefas no banco de dados pelo nome.
+     * 
+     * @param nome O nome do TipoTarefa a ser buscado.
+     * @return Uma lista de TipoTarefas cujo nome contém a string fornecida.
+     */
+    public List<TipoTarefa> buscarTiposTarefaPorNome(String nome) {
+        Session sessao = null;
+        List<TipoTarefa> tiposTareas = null;
 
-			sessao.update(tipoTarefa);
+        try {
+            sessao = fabrica.getConexao().openSession();
+            sessao.beginTransaction();
 
-			sessao.getTransaction().commit();
+            CriteriaBuilder construtor = sessao.getCriteriaBuilder();
+            CriteriaQuery<TipoTarefa> criteria = construtor.createQuery(TipoTarefa.class);
+            Root<TipoTarefa> raizTipoTarefa = criteria.from(TipoTarefa.class);
 
-		} catch (Exception sqlException) {
+            criteria.select(raizTipoTarefa).where(construtor.like(raizTipoTarefa.get(TipoTarefa_.NOME), "%" + nome + "%"));
 
-			sqlException.printStackTrace();
+            tiposTareas = sessao.createQuery(criteria).getResultList();  // Executa a consulta e armazena os resultados
 
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
+            sessao.getTransaction().commit();
 
-		} finally {
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+            if (sessao.getTransaction() != null) {
+                sessao.getTransaction().rollback();  // Reverte a transação em caso de erro
+            }
 
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-	}
-
-	public TipoTarefa buscarTipoTarefaPorId(Long id) {
-		Session sessao = null;
-		TipoTarefa tipoTarefa = null;
-
-		try {
-			sessao = fabrica.getConexao().openSession();
-			sessao.beginTransaction();
-
-			CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-			CriteriaQuery<TipoTarefa> criteria = construtor.createQuery(TipoTarefa.class);
-			Root<TipoTarefa> raizTipoTarefa = criteria.from(TipoTarefa.class);
-
-			criteria.select(raizTipoTarefa).where(construtor.equal(raizTipoTarefa.get(TipoTarefa_.ID), id));
-
-			tipoTarefa = sessao.createQuery(criteria).getSingleResult();
-
-			sessao.getTransaction().commit();
-
-		} catch (Exception sqlException) {
-			sqlException.printStackTrace();
-
-			if (sessao.getTransaction() != null) {
-				sessao.getTransaction().rollback();
-			}
-
-		} finally {
-			if (sessao != null) {
-				sessao.close();
-			}
-		}
-
-		return tipoTarefa;
-	}
-
-	public List<TipoTarefa> buscarTiposTarefa() {
-
-	    Session sessao = null;
-	    List<TipoTarefa> tiposTarefa = null;
-
-	    try {
-
-	        sessao = fabrica.getConexao().openSession();
-	        sessao.beginTransaction();
-
-	        CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-
-	        CriteriaQuery<TipoTarefa> criteria = construtor.createQuery(TipoTarefa.class);
-	        Root<TipoTarefa> raizTipoTarefa = criteria.from(TipoTarefa.class);
-
-	        criteria.select(raizTipoTarefa);
-
-	        tiposTarefa = sessao.createQuery(criteria).getResultList();
-
-	        sessao.getTransaction().commit();
-
-	    } catch (Exception sqlException) {
-
-	        sqlException.printStackTrace();
-
-	        if (sessao.getTransaction() != null) {
-	            sessao.getTransaction().rollback();
-	        }
-
-	    } finally {
-
-	        if (sessao != null) {
-	            sessao.close();
-	        }
-	    }
-
-	    return tiposTarefa;
-	}
-	
-	public List<TipoTarefa> buscarTiposTarefaPorNome(String nome) {
-	    Session sessao = null;
-	    List<TipoTarefa> tiposTareas = null;
-
-	    try {
-	        sessao = fabrica.getConexao().openSession();
-	        sessao.beginTransaction();
-
-	        CriteriaBuilder construtor = sessao.getCriteriaBuilder();
-	        CriteriaQuery<TipoTarefa> criteria = construtor.createQuery(TipoTarefa.class);
-	        Root<TipoTarefa> raizTipoTarefa = criteria.from(TipoTarefa.class);
-
-	        criteria.select(raizTipoTarefa).where(construtor.like(raizTipoTarefa.get(TipoTarefa_.NOME), "%" + nome + "%"));
-
-	        tiposTareas = sessao.createQuery(criteria).getResultList();
-
-	        sessao.getTransaction().commit();
-
-	    } catch (Exception sqlException) {
-
-	        sqlException.printStackTrace();
-	        if (sessao.getTransaction() != null) {
-	            sessao.getTransaction().rollback();
-	        }
-
-	    } finally {
-	        if (sessao != null) {
-	            sessao.close();
-	        }
-	    }
-	    return tiposTareas;
-	}
+        } finally {
+            if (sessao != null) {
+                sessao.close();  // Fecha a sessão
+            }
+        }
+        return tiposTareas;  // Retorna a lista de TipoTarefas encontradas
+    }
 }
